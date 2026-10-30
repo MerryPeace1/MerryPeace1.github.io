@@ -1,0 +1,48 @@
+name: Update ODC data
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/update.yml']
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fetch ODC schedule, results and standings
+        run: |
+          cat > /tmp/update.mjs <<'JS'
+          // Pulls ODC (Orion Drift Competitive) schedule, results and standings into data.json for merrypeace1.github.io.
+          const API='https://oriondriftcompetitive.com/api/v1',H={'User-Agent':'MerryPeaceTV-site/1.0'};
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function J(p){for(let i=0;i<3;i++){try{const r=await fetch(API+p,{headers:H});if(r.ok)return await r.json()}catch(e){}await sleep(1500)}throw new Error('fetch failed '+p)}
+          async function all(p){let out=[],from=0;for(;;){const pg=await J(p+(p.includes('?')?'&':'?')+'from='+from+'&limit=100');out=out.concat(pg.data||[]);if(!pg.hasMore)break;from+=100;await sleep(150)}return out}
+          const groups=await J('/league-groups');const g=(Array.isArray(groups)?groups:groups.data||[]).find(x=>/1\.5/.test(x.name));
+          const data={updated:new Date().toISOString(),season:g?g.name:'',upcoming:[],recent:[],standings:{}};
+          const T=t=>t?{name:t.name,logo:t.profilePicture||null}:null;
+          let ms=[];
+          for(const lg of (g?g.leagues:[])){if(!['NA','EU','OCE'].includes(lg.region))continue;
+            const teams=await all('/leagues/'+lg._id+'/leagueteams');
+            data.standings[lg.region]={week:lg.weekNumber,weeks:lg.settings&&lg.settings.totalWeeks,teams:teams.filter(t=>t.teamId).sort((a,b)=>b.mmr-a.mmr).slice(0,12)
+              .map((t,i)=>({rank:i+1,name:t.teamSnapshot&&t.teamSnapshot.name||t.teamId.name,logo:t.teamId.profilePicture||null,w:t.wins|0,l:t.losses|0,mmr:Math.round(t.mmr||0)}))};
+            for(const m of await all('/leagues/'+lg._id+'/matches')){let a=0,b=0;for(const gm of (m.games||[])){if(gm.team1Score>gm.team2Score)a++;else if(gm.team2Score>gm.team1Score)b++}
+              ms.push({region:lg.region,week:m.weekNumber,time:m.scheduledTime||null,state:m.state,t1:T(m.team1Id),t2:T(m.team2Id),s1:a,s2:b})}}
+          const now=Date.now()-3*3600e3;
+          data.upcoming=ms.filter(m=>!['completed','forfeited','cancelled'].includes(m.state)&&m.time&&Date.parse(m.time)>now&&m.t1&&m.t2).sort((x,y)=>Date.parse(x.time)-Date.parse(y.time)).slice(0,18);
+          data.recent=ms.filter(m=>m.state==='completed'&&m.time&&m.t1&&m.t2).sort((x,y)=>Date.parse(y.time)-Date.parse(x.time)).slice(0,12);
+          (await import('fs')).writeFileSync('data.json',JSON.stringify(data));
+          console.log('ok',data.upcoming.length,'upcoming',data.recent.length,'recent');
+          JS
+          node /tmp/update.mjs
+      - name: Save
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --cached --quiet || (git commit -m "Update ODC data" && git push)
