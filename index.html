@@ -1,13 +1,45 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MerryPeaceTV</title><meta name="description" content="MerryPeaceTV - live Orion Drift Competitive (ODC) casts on YouTube.">
+<title>MerryPeaceTV</title><meta name="description" content="MerryPeaceTV - live Orion Drift Competitive (ODC) casts on YouTube. Schedule, results and standings.">
 <style>
-:root{color-scheme:dark}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 20%,#3a1f7a,transparent 60%),radial-gradient(ellipse at 80% 80%,#7a1f4a,transparent 60%),#07051a;color:#f4f2ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;text-align:center;padding:24px}
-h1{font-size:clamp(40px,9vw,88px);margin:0;letter-spacing:2px}h1 span{color:#2ee6ff}p{color:#c9c3e6;font-size:18px;margin:12px 0 28px}
-a.b{display:inline-block;margin:6px;padding:12px 22px;border-radius:14px;color:#fff;text-decoration:none;font-weight:700}.yt{background:#e8102e}.dc{background:#5865f2}
-footer{margin-top:36px;font-size:14px}footer a{color:#b9a8ff}
-</style></head><body><main>
-<h1>MERRYPEACE<span>TV</span></h1>
-<p>Live Orion Drift Competitive (ODC) casts &middot; VR esports</p>
-<a class="b yt" href="https://youtube.com/@MerryPeaceTV">Watch on YouTube</a><a class="b dc" href="https://discord.gg/Jm765bJypZ">Join the Discord</a>
-<footer><a href="privacy.html">Privacy policy</a> &middot; <a href="terms.html">Terms</a></footer>
-</main></body></html>
+:root{color-scheme:dark;--bg:#07051a;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--ink:#f4f2ff;--mut:#b9b3d9;--acc:#2ee6ff;--pink:#ff4d9d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#2c1767,transparent 55%),radial-gradient(ellipse at 90% 30%,#5a1640,transparent 50%),var(--bg);background-attachment:fixed;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 16px 48px}
+header{text-align:center;padding:18px 0 8px}h1{font-size:clamp(38px,8vw,76px);margin:0;letter-spacing:2px}h1 span{color:var(--acc)}
+.tag{color:var(--mut);margin:8px 0 18px}.btns a{display:inline-block;margin:5px;padding:11px 20px;border-radius:12px;color:#fff;text-decoration:none;font-weight:700}.yt{background:#e8102e}.dc{background:#5865f2}
+.live{margin:22px auto 6px;max-width:860px;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#000}.live iframe{width:100%;height:100%;border:0}
+h2{font-size:22px;letter-spacing:1px;margin:34px 0 12px}h2 small{font-size:13px;color:var(--mut);font-weight:500;margin-left:8px}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr))}
+.m{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.tm{display:flex;align-items:center;gap:9px;min-width:0;font-weight:700}.tm.r{flex-direction:row-reverse;text-align:right}
+.tm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lg{flex:none;width:34px;height:34px;border-radius:9px;background:#1a1730 center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:13px}
+.mid{text-align:center;font-size:12px;color:var(--mut);line-height:1.35;min-width:84px}.mid b{display:block;font-size:20px;color:var(--ink)}.mid .rg{display:inline-block;padding:1px 6px;border-radius:6px;background:rgba(46,230,255,.15);color:var(--acc);font-weight:700;margin-top:2px}
+.win{color:#ffd27a}
+.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{background:var(--card);border:1px solid var(--line);color:var(--ink);padding:7px 14px;border-radius:10px;font-weight:700;cursor:pointer}.tabs button.on{background:var(--acc);color:#05121a}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}td,th{padding:9px 12px;text-align:left;border-top:1px solid var(--line)}th{color:var(--mut);font-size:12px;letter-spacing:1px;border-top:0}td.n{display:flex;align-items:center;gap:9px;font-weight:700}td.r{width:52px;color:var(--mut)}
+.empty{color:var(--mut);padding:12px}footer{margin-top:40px;text-align:center;color:var(--mut);font-size:13px}footer a{color:#b9a8ff}
+</style></head><body><div class="wrap">
+<header><h1>MERRYPEACE<span>TV</span></h1><p class="tag">Live Orion Drift Competitive (ODC) casts &middot; VR esports</p>
+<div class="btns"><a class="yt" href="https://youtube.com/@MerryPeaceTV">Watch on YouTube</a><a class="dc" href="https://discord.gg/Jm765bJypZ">Join the Discord</a></div></header>
+<div class="live"><iframe src="https://www.youtube.com/embed/live_stream?channel=UCjY3kK3Ppx5il2088WBjtZw" title="MerryPeaceTV live" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<h2>Upcoming ODC matches <small id="upd"></small></h2><div class="grid" id="up"><div class="empty">Loading…</div></div>
+<h2>Latest results</h2><div class="grid" id="res"></div>
+<h2>Standings <small id="wk"></small></h2><div class="tabs" id="tabs"></div><table><thead><tr><th>#</th><th>Team</th><th>W-L</th><th>MMR</th></tr></thead><tbody id="st"></tbody></table>
+<footer>Stats from <a href="https://oriondriftcompetitive.com">oriondriftcompetitive.com</a>, updated every 30 minutes &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></footer>
+</div>
+<script>
+function e(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function lg(t){return '<div class="lg" style="'+(t.logo?'background-image:url(&quot;'+e(t.logo)+'&quot;)':'')+'">'+(t.logo?'':e((t.name||'?')[0]))+'</div>'}
+function when(s){var d=new Date(s),n=new Date(),tm=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),dd=d.toDateString()===n.toDateString()?'Today':d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});return dd+'<b>'+tm+'</b>'}
+function card(m,done){var w1=done&&m.s1>m.s2,w2=done&&m.s2>m.s1;
+  return '<div class="m"><div class="tm">'+lg(m.t1)+'<b class="'+(w1?'win':'')+'">'+e(m.t1.name)+'</b></div><div class="mid">'+(done?'Week '+e(m.week)+'<b>'+m.s1+' - '+m.s2+'</b>':when(m.time))+'<span class="rg">'+e(m.region)+'</span></div><div class="tm r">'+lg(m.t2)+'<b class="'+(w2?'win':'')+'">'+e(m.t2.name)+'</b></div></div>'}
+var D,R='NA';
+function st(){var s=D.standings[R]||{teams:[]};document.getElementById('wk').textContent=s.week?('Week '+s.week+(s.weeks?' of '+s.weeks:'')):'';
+  document.getElementById('st').innerHTML=s.teams.map(function(t){return '<tr><td class="r">'+t.rank+'</td><td class="n">'+lg(t)+e(t.name)+'</td><td>'+t.w+'-'+t.l+'</td><td>'+t.mmr+'</td></tr>'}).join('')||'<tr><td colspan="4" class="empty">No standings yet</td></tr>';
+  document.getElementById('tabs').innerHTML=Object.keys(D.standings).map(function(k){return '<button class="'+(k===R?'on':'')+'" data-r="'+k+'">'+k+'</button>'}).join('')}
+document.getElementById('tabs').onclick=function(ev){var r=ev.target.getAttribute('data-r');if(r){R=r;st()}};
+fetch('https://raw.githubusercontent.com/MerryPeace1/MerryPeace1.github.io/main/data.json?t='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return fetch('data.json').then(function(r){return r.json()})}).then(function(d){D=d;
+  document.getElementById('upd').textContent='updated '+new Date(d.updated).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  document.getElementById('up').innerHTML=d.upcoming.map(function(m){return card(m,false)}).join('')||'<div class="empty">No matches scheduled right now.</div>';
+  document.getElementById('res').innerHTML=d.recent.map(function(m){return card(m,true)}).join('')||'<div class="empty">No results yet.</div>';
+  if(!d.standings[R])R=Object.keys(d.standings)[0];st()}).catch(function(){document.getElementById('up').innerHTML='<div class="empty">Schedule unavailable right now.</div>'});
+</script></body></html>
