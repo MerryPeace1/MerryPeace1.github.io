@@ -100,7 +100,9 @@ function st(){var s=D.standings[R]||{teams:[]};document.getElementById('wk').tex
   document.getElementById('st').innerHTML=s.teams.map(function(t){return '<tr><td class="r">'+t.rank+'</td><td class="n">'+lg(t)+e(t.name)+'</td><td>'+t.w+'-'+t.l+'</td><td>'+t.mmr+'</td></tr>'}).join('')||'<tr><td colspan="4" class="empty">No standings yet</td></tr>';
   document.getElementById('tabs').innerHTML=Object.keys(D.standings).map(function(k){return '<button class="'+(k===R?'on':'')+'" data-r="'+k+'">'+k+'</button>'}).join('')}
 document.getElementById('tabs').onclick=function(ev){var r=ev.target.getAttribute('data-r');if(r){R=r;st()}};
-fetch('https://raw.githubusercontent.com/MerryPeace1/MerryPeace1.github.io/main/data.json?t='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return fetch('data.json').then(function(r){return r.json()})}).then(function(d){D=d;
+// two copies of data.json (GitHub raw + this site); both are cached for a few minutes, so use whichever is newer
+function get(u){return fetch(u).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return null})}
+Promise.all([get('https://raw.githubusercontent.com/MerryPeace1/MerryPeace1.github.io/main/data.json?t='+Date.now()),get('data.json?t='+Date.now())]).then(function(a){var t=function(d){return d?Date.parse(d.checked||d.updated)||0:-1};var d=t(a[0])>=t(a[1])?a[0]:a[1];if(!d)throw 0;return d}).then(function(d){D=d;
   var chk=d.checked||d.updated;document.getElementById('upd').textContent='checked '+ago(chk);
   // only matches that have not started more than 3 hours ago, in case the data is a little old
   var up=(d.upcoming||[]).filter(function(m){return Date.parse(m.time)>Date.now()-3*36e5});
