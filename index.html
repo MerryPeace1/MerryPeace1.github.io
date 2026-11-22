@@ -59,18 +59,18 @@ dialog iframe{width:100%;height:100%;border:0}dialog .x{position:absolute;top:-4
 <nav><div class="wrap"><a class="brand" href="#">MERRYPEACE<i>TV</i></a><div class="links"><a href="#casts">Past casts</a><a href="#goals">Top goals</a><a href="#schedule">Schedule</a><a href="#results">Results</a><a href="#standings">Standings</a></div></div></nav>
 <div class="wrap">
 <header>
-  <span class="badge" id="livebadge"><b></b><span>Offline · next cast on the schedule</span></span>
+  <span class="badge" id="livebadge"><b></b><span>ODC Season 1.5 · live casts on YouTube</span></span>
   <h1>MERRYPEACE<span>TV</span></h1>
   <p class="tag">Live casts of Orion Drift Competitive (ODC) - VR esports, with play-by-play, replays and the biggest goals of the week.</p>
   <div class="btns">
-    <a class="btn yt" href="https://youtube.com/@MerryPeaceTV">▶ Watch on YouTube</a>
+    <a class="btn yt" href="https://www.youtube.com/@MerryPeaceTV/live">🔴 Watch live</a>
     <a class="btn dc" href="https://discord.gg/Jm765bJypZ">💬 Join the Discord</a>
     <a class="btn" href="https://www.tiktok.com/@merrypeace_casting">🎵 TikTok</a>
     <a class="btn" href="https://www.youtube.com/@Shokonishmiya">▶ Main channel</a>
   </div>
   <div class="stats"><div><b id="s-casts">-</b>full casts</div><div><b id="s-views">-</b>cast views</div><div><b id="s-season">-</b>season</div></div>
 </header>
-<div class="live"><iframe src="https://www.youtube.com/embed/live_stream?channel=UCjY3kK3Ppx5il2088WBjtZw" title="MerryPeaceTV live" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<div class="live"><iframe id="hero" src="about:blank" title="MerryPeaceTV latest cast" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
 
 <section id="casts"><h2>Past casts <small>full ODC matches, cast live</small><a class="more" href="https://www.youtube.com/@MerryPeaceTV/streams">All on YouTube →</a></h2><div class="vids" id="vids"><div class="empty">Loading…</div></div></section>
 <section id="goals"><h2>Top goals <small>the best moments as Shorts</small></h2><div class="shorts" id="shorts"></div></section>
@@ -107,10 +107,12 @@ Promise.all([get('https://raw.githubusercontent.com/MerryPeace1/MerryPeace1.gith
   // only matches that have not started more than 3 hours ago, in case the data is a little old
   var up=(d.upcoming||[]).filter(function(m){return Date.parse(m.time)>Date.now()-3*36e5});
   var live=up.some(function(m){return m.state==='live'});
-  if(live){var b=document.getElementById('livebadge');b.classList.add('on');b.querySelector('span').textContent='ODC match live right now'}
+  var b=document.getElementById('livebadge');if(live){b.classList.add('on');b.querySelector('span').textContent='ODC match live right now'}else if(up[0]){b.querySelector('span').innerHTML='Next ODC match: '+when(up[0].time).replace('<b>',' ').replace('</b>','')}
   document.getElementById('up').innerHTML=up.map(function(m){return card(m,false)}).join('')||'<div class="empty">No matches have a time yet - teams pick their times during the week.</div>';
   document.getElementById('res').innerHTML=(d.recent||[]).map(function(m){return card(m,true)}).join('')||'<div class="empty">No results yet.</div>';
-  var S=d.streams||[];document.getElementById('vids').innerHTML=S.slice(0,9).map(function(v,i){return vid(v,i)}).join('')||'<div class="empty">Past casts show up here after each stream.</div>';
+  var S=d.streams||[];
+  // the big player shows the latest cast (YouTube's live embed only shows "unavailable" while offline)
+  document.getElementById('hero').src=S[0]?'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(S[0].id)+'?rel=0':'https://www.youtube.com/embed/live_stream?channel=UCjY3kK3Ppx5il2088WBjtZw';document.getElementById('vids').innerHTML=S.slice(0,9).map(function(v,i){return vid(v,i)}).join('')||'<div class="empty">Past casts show up here after each stream.</div>';
   var G=d.goals||[];document.getElementById('shorts').innerHTML=G.slice(0,12).map(function(v,i){return vid(v,i,true)}).join('')||'<div class="empty">Top goals coming soon.</div>';
   document.getElementById('s-casts').textContent=S.length;document.getElementById('s-views').textContent=n(S.reduce(function(a,v){return a+(v.views||0)},0));document.getElementById('s-season').textContent=(d.season||'').replace('Season ','S')||'-';
   if(!d.standings[R])R=Object.keys(d.standings)[0];st()}).catch(function(){document.getElementById('up').innerHTML='<div class="empty">Schedule unavailable right now.</div>'});
