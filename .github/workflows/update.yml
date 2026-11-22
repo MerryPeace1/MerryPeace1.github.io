@@ -1,4 +1,6 @@
 name: Update ODC data
+# GitHub only starts scheduled runs every few hours on small repos, so each run keeps going for ~5h45m and
+# refreshes data.json every 10 minutes. A newer run cancels the older one (concurrency), so there is always one.
 on:
   schedule:
     - cron: '7,37 * * * *'
@@ -7,42 +9,61 @@ on:
     paths: ['.github/workflows/update.yml']
 permissions:
   contents: write
+concurrency:
+  group: odc-data
+  cancel-in-progress: true
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Fetch ODC schedule, results and standings
+      - name: Fetch ODC data + past streams every 10 minutes
         run: |
           cat > /tmp/update.mjs <<'JS'
-          // Pulls ODC (Orion Drift Competitive) schedule, results and standings into data.json for merrypeace1.github.io.
+          // ODC (Orion Drift Competitive) schedule, results, standings + MerryPeaceTV past streams -> data.json
+          import fs from 'fs';
           const API='https://oriondriftcompetitive.com/api/v1',H={'User-Agent':'MerryPeaceTV-site/1.0'};
           const sleep=ms=>new Promise(r=>setTimeout(r,ms));
           async function J(p){for(let i=0;i<3;i++){try{const r=await fetch(API+p,{headers:H});if(r.ok)return await r.json()}catch(e){}await sleep(1500)}throw new Error('fetch failed '+p)}
           async function all(p){let out=[],from=0;for(;;){const pg=await J(p+(p.includes('?')?'&':'?')+'from='+from+'&limit=100');out=out.concat(pg.data||[]);if(!pg.hasMore)break;from+=100;await sleep(150)}return out}
-          const groups=await J('/league-groups');const g=(Array.isArray(groups)?groups:groups.data||[]).find(x=>/1\.5/.test(x.name));
-          const data={updated:new Date().toISOString(),season:g?g.name:'',upcoming:[],recent:[],standings:{}};
-          const T=t=>t?{name:t.name,logo:t.profilePicture||null}:null;
-          let ms=[];
-          for(const lg of (g?g.leagues:[])){if(!['NA','EU','OCE'].includes(lg.region))continue;
-            const teams=await all('/leagues/'+lg._id+'/leagueteams');
-            data.standings[lg.region]={week:lg.weekNumber,weeks:lg.settings&&lg.settings.totalWeeks,teams:teams.filter(t=>t.teamId).sort((a,b)=>b.mmr-a.mmr).slice(0,12)
-              .map((t,i)=>({rank:i+1,name:t.teamSnapshot&&t.teamSnapshot.name||t.teamId.name,logo:t.teamId.profilePicture||null,w:t.wins|0,l:t.losses|0,mmr:Math.round(t.mmr||0)}))};
-            for(const m of await all('/leagues/'+lg._id+'/matches')){let a=0,b=0;for(const gm of (m.games||[])){if(gm.team1Score>gm.team2Score)a++;else if(gm.team2Score>gm.team1Score)b++}
-              ms.push({region:lg.region,week:m.weekNumber,time:m.scheduledTime||null,state:m.state,t1:T(m.team1Id),t2:T(m.team2Id),s1:a,s2:b})}}
-          const now=Date.now()-3*3600e3;
-          data.upcoming=ms.filter(m=>!['completed','forfeited','cancelled'].includes(m.state)&&m.time&&Date.parse(m.time)>now&&m.t1&&m.t2).sort((x,y)=>Date.parse(x.time)-Date.parse(y.time)).slice(0,18);
-          data.recent=ms.filter(m=>m.state==='completed'&&m.time&&m.t1&&m.t2).sort((x,y)=>Date.parse(y.time)-Date.parse(x.time)).slice(0,12);
-          (await import('fs')).writeFileSync('data.json',JSON.stringify(data));
-          console.log('ok',data.upcoming.length,'upcoming',data.recent.length,'recent');
+          // YouTube playlist RSS (no key needed): newest 15 videos with title, date, views
+          async function feed(id){try{const x=await (await fetch('https://www.youtube.com/feeds/videos.xml?playlist_id='+id)).text();
+            return x.split('<entry>').slice(1).map(e=>{const g=re=>((e.match(re)||[])[1]||'');const un=s=>s.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+              return {id:g(/<yt:videoId>([^<]+)/),title:un(g(/<title>([^<]+)/)),date:g(/<published>([^<]+)/),views:+g(/views="(\d+)"/)||0}}).filter(v=>v.id)}catch(e){return null}}
+          async function build(){
+            const groups=await J('/league-groups');const g=(Array.isArray(groups)?groups:groups.data||[]).find(x=>/1\.5/.test(x.name));
+            const data={season:g?g.name:'',upcoming:[],recent:[],standings:{}};
+            const T=t=>t?{name:t.name,logo:t.profilePicture||null}:null;let ms=[];
+            for(const lg of (g?g.leagues:[])){if(!['NA','EU','OCE'].includes(lg.region))continue;
+              const teams=await all('/leagues/'+lg._id+'/leagueteams');
+              data.standings[lg.region]={week:lg.weekNumber,weeks:lg.settings&&lg.settings.totalWeeks,teams:teams.filter(t=>t.teamId).sort((a,b)=>b.mmr-a.mmr).slice(0,12)
+                .map((t,i)=>({rank:i+1,name:t.teamSnapshot&&t.teamSnapshot.name||t.teamId.name,logo:t.teamId.profilePicture||null,w:t.wins|0,l:t.losses|0,mmr:Math.round(t.mmr||0)}))};
+              for(const m of await all('/leagues/'+lg._id+'/matches')){let a=0,b=0;for(const gm of (m.games||[])){if(gm.team1Score>gm.team2Score)a++;else if(gm.team2Score>gm.team1Score)b++}
+                ms.push({region:lg.region,week:m.weekNumber,time:m.scheduledTime||null,state:m.state,t1:T(m.team1Id),t2:T(m.team2Id),s1:a,s2:b})}}
+            const now=Date.now()-3*3600e3;
+            data.upcoming=ms.filter(m=>!['completed','forfeited','cancelled'].includes(m.state)&&m.time&&Date.parse(m.time)>now&&m.t1&&m.t2).sort((x,y)=>Date.parse(x.time)-Date.parse(y.time)).slice(0,18);
+            data.recent=ms.filter(m=>m.state==='completed'&&m.time&&m.t1&&m.t2).sort((x,y)=>Date.parse(y.time)-Date.parse(x.time)).slice(0,12);
+            const old=(()=>{try{return JSON.parse(fs.readFileSync('data.json','utf8'))}catch(e){return {}}})();
+            data.streams=(await feed('PLUHgrWIyUbGw'))||old.streams||[];   // "ODC Season 1.5 - Full Casts" (live VODs)
+            data.goals=(await feed('PLXKcbCCPMvLU'))||old.goals||[];       // "Top Goals - Orion Drift ODC" (Shorts)
+            data.streams.sort((a,b)=>a.date<b.date?1:-1);
+            return {data,old};
+          }
+          const end=Date.now()+(+process.env.LOOP_MIN||0)*60e3;
+          for(;;){
+            try{const {data,old}=await build();const same=JSON.stringify({...data})===JSON.stringify({...old,updated:undefined,checked:undefined});
+              data.updated=same?old.updated:new Date().toISOString();data.checked=new Date().toISOString();
+              const stale=!old.checked||Date.now()-Date.parse(old.checked)>55*60e3;   // refresh "checked" at least hourly
+              if(!same||stale){fs.writeFileSync('data.json',JSON.stringify(data));
+                const sh=(await import('child_process')).execSync;sh('git add data.json && (git diff --cached --quiet || (git commit -q -m "Update ODC data" && git pull -q --rebase && git push -q))',{stdio:'inherit'})}
+              console.log(new Date().toISOString(),'ok',data.upcoming.length,'upcoming',data.streams.length,'streams',same?'(no change)':'(saved)')}
+            catch(e){console.log('error',e.message)}
+            if(Date.now()+10*60e3>end)break;await sleep(10*60e3)}
           JS
-          node /tmp/update.mjs
-      - name: Save
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          git diff --cached --quiet || (git commit -m "Update ODC data" && git push)
+          LOOP_MIN=340 node /tmp/update.mjs

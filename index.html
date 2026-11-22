@@ -1,45 +1,115 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MerryPeaceTV</title><meta name="description" content="MerryPeaceTV - live Orion Drift Competitive (ODC) casts on YouTube. Schedule, results and standings.">
+<title>MerryPeaceTV</title><meta name="description" content="MerryPeaceTV - live Orion Drift Competitive (ODC) casts on YouTube. Past casts, schedule, results and standings.">
+<meta property="og:title" content="MerryPeaceTV"><meta property="og:description" content="Live Orion Drift Competitive casts - past casts, schedule, results and standings."><meta name="theme-color" content="#07051a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#07051a;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--ink:#f4f2ff;--mut:#b9b3d9;--acc:#2ee6ff;--pink:#ff4d9d}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#2c1767,transparent 55%),radial-gradient(ellipse at 90% 30%,#5a1640,transparent 50%),var(--bg);background-attachment:fixed;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-.wrap{max-width:1100px;margin:0 auto;padding:28px 16px 48px}
-header{text-align:center;padding:18px 0 8px}h1{font-size:clamp(38px,8vw,76px);margin:0;letter-spacing:2px}h1 span{color:var(--acc)}
-.tag{color:var(--mut);margin:8px 0 18px}.btns a{display:inline-block;margin:5px;padding:11px 20px;border-radius:12px;color:#fff;text-decoration:none;font-weight:700}.yt{background:#e8102e}.dc{background:#5865f2}
-.live{margin:22px auto 6px;max-width:860px;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#000}.live iframe{width:100%;height:100%;border:0}
-h2{font-size:22px;letter-spacing:1px;margin:34px 0 12px}h2 small{font-size:13px;color:var(--mut);font-weight:500;margin-left:8px}
-.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr))}
+:root{color-scheme:dark;--bg:#07051a;--card:rgba(255,255,255,.055);--card2:rgba(255,255,255,.09);--line:rgba(255,255,255,.11);--ink:#f4f2ff;--mut:#a9a3cc;--acc:#2ee6ff;--pink:#ff4fd8;--pur:#7c5cff;--gold:#ffd27a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;overflow-x:hidden}
+body:before{content:'';position:fixed;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 15% 10%,rgba(124,92,255,.45),transparent 70%),radial-gradient(35% 30% at 90% 25%,rgba(255,79,216,.28),transparent 70%),radial-gradient(40% 35% at 60% 95%,rgba(46,230,255,.18),transparent 70%);animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(3%,-2%) scale(1.05)}}
+@media (prefers-reduced-motion:reduce){body:before{animation:none}*{scroll-behavior:auto}}
+a{color:inherit}.wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:5;backdrop-filter:blur(14px);background:rgba(7,5,26,.72);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:18px;height:56px}nav .brand{font-family:'Chakra Petch',sans-serif;font-weight:700;letter-spacing:2px;text-decoration:none;font-size:18px}nav .brand i{font-style:normal;color:var(--acc)}
+nav .links{display:flex;gap:16px;margin-left:auto;font-size:14px;font-weight:600}nav .links a{text-decoration:none;color:var(--mut)}nav .links a:hover{color:var(--ink)}
+@media(max-width:700px){nav .links{display:none}}
+header{text-align:center;padding:56px 0 18px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:13px;color:var(--mut);background:var(--card)}
+.badge b{width:8px;height:8px;border-radius:50%;background:#555}.badge.on{color:#fff;border-color:rgba(255,59,90,.6);background:rgba(255,59,90,.15)}.badge.on b{background:#ff3b5a;box-shadow:0 0 0 4px rgba(255,59,90,.25);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(255,59,90,0)}}
+h1{font-family:'Chakra Petch',sans-serif;font-size:clamp(44px,9vw,96px);line-height:.95;margin:18px 0 10px;letter-spacing:3px}
+h1 span{background:linear-gradient(90deg,var(--acc),var(--pur),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{color:var(--mut);margin:0 auto 22px;max-width:560px;font-size:17px;line-height:1.5}
+.btns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;color:#fff;text-decoration:none;font-weight:700;border:1px solid var(--line);background:var(--card);transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-2px);background:var(--card2)}.btn.yt{background:#e8102e;border-color:#e8102e}.btn.dc{background:#5865f2;border-color:#5865f2}
+.stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin:26px 0 0;color:var(--mut);font-size:13px}.stats b{display:block;font-family:'Chakra Petch',sans-serif;font-size:26px;color:var(--ink)}
+.live{margin:30px auto 0;max-width:900px;aspect-ratio:16/9;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#000;box-shadow:0 30px 80px rgba(124,92,255,.25)}.live iframe{width:100%;height:100%;border:0}
+section{padding-top:54px}
+h2{font-family:'Chakra Petch',sans-serif;font-size:26px;letter-spacing:1.5px;margin:0 0 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}h2 small{font-family:Inter,sans-serif;font-size:13px;color:var(--mut);font-weight:500;letter-spacing:0}
+h2 a.more{margin-left:auto;font-family:Inter,sans-serif;font-size:13px;color:var(--acc);text-decoration:none;font-weight:600;letter-spacing:0}
+.vids{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.v{all:unset;cursor:pointer;display:block;border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .18s,border-color .18s}
+.v:hover,.v:focus-visible{transform:translateY(-3px);border-color:rgba(46,230,255,.55)}.v:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.v .th{position:relative;aspect-ratio:16/9;background:#120f2a center/cover no-repeat}.v .th:after{content:'▶';position:absolute;inset:auto auto 10px 10px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;background:rgba(0,0,0,.6);color:#fff}
+.v .th .tagw{position:absolute;top:10px;left:10px;padding:3px 8px;border-radius:7px;background:rgba(7,5,26,.8);font-size:11px;font-weight:700;color:var(--acc);letter-spacing:.5px}
+.v .meta{padding:11px 13px 13px}.v .ti{font-weight:700;font-size:14.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:39px}.v .sub{color:var(--mut);font-size:12.5px;margin-top:6px}
+.v.feat{grid-column:1/-1;display:grid;grid-template-columns:1.6fr 1fr}.v.feat .th{aspect-ratio:16/9}.v.feat .meta{padding:22px;display:flex;flex-direction:column;justify-content:center}.v.feat .ti{font-size:22px;-webkit-line-clamp:3;min-height:0}.v.feat .kick{color:var(--pink);font-weight:700;font-size:12px;letter-spacing:2px;margin-bottom:8px}
+@media(max-width:760px){.v.feat{display:block}.v.feat .ti{font-size:17px}}
+.shorts{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.shorts .v .th{aspect-ratio:9/16}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr))}
 .m{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
-.tm{display:flex;align-items:center;gap:9px;min-width:0;font-weight:700}.tm.r{flex-direction:row-reverse;text-align:right}
-.tm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lg{flex:none;width:34px;height:34px;border-radius:9px;background:#1a1730 center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:13px}
-.mid{text-align:center;font-size:12px;color:var(--mut);line-height:1.35;min-width:84px}.mid b{display:block;font-size:20px;color:var(--ink)}.mid .rg{display:inline-block;padding:1px 6px;border-radius:6px;background:rgba(46,230,255,.15);color:var(--acc);font-weight:700;margin-top:2px}
-.win{color:#ffd27a}
-.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{background:var(--card);border:1px solid var(--line);color:var(--ink);padding:7px 14px;border-radius:10px;font-weight:700;cursor:pointer}.tabs button.on{background:var(--acc);color:#05121a}
-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}td,th{padding:9px 12px;text-align:left;border-top:1px solid var(--line)}th{color:var(--mut);font-size:12px;letter-spacing:1px;border-top:0}td.n{display:flex;align-items:center;gap:9px;font-weight:700}td.r{width:52px;color:var(--mut)}
-.empty{color:var(--mut);padding:12px}footer{margin-top:40px;text-align:center;color:var(--mut);font-size:13px}footer a{color:#b9a8ff}
-</style></head><body><div class="wrap">
-<header><h1>MERRYPEACE<span>TV</span></h1><p class="tag">Live Orion Drift Competitive (ODC) casts &middot; VR esports</p>
-<div class="btns"><a class="yt" href="https://youtube.com/@MerryPeaceTV">Watch on YouTube</a><a class="dc" href="https://discord.gg/Jm765bJypZ">Join the Discord</a></div></header>
+.m.lv{border-color:rgba(255,59,90,.55);background:rgba(255,59,90,.08)}
+.tm{display:flex;align-items:center;gap:9px;min-width:0;font-weight:700}.tm.r{flex-direction:row-reverse;text-align:right}.tm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lg{flex:none;width:36px;height:36px;border-radius:10px;background:#1a1730 center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:13px}
+.mid{text-align:center;font-size:12px;color:var(--mut);line-height:1.35;min-width:88px}.mid b{display:block;font-size:20px;color:var(--ink);font-family:'Chakra Petch',sans-serif}
+.rg{display:inline-block;padding:1px 7px;border-radius:6px;background:rgba(46,230,255,.13);color:var(--acc);font-weight:700;margin-top:3px}.lvt{color:#ff6b84;font-weight:700}
+.win{color:var(--gold)}
+.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{background:var(--card);border:1px solid var(--line);color:var(--ink);padding:8px 16px;border-radius:10px;font-weight:700;cursor:pointer;font:inherit;font-weight:700}.tabs button.on{background:var(--acc);color:#05121a;border-color:var(--acc)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}td,th{padding:10px 12px;text-align:left;border-top:1px solid var(--line)}th{color:var(--mut);font-size:12px;letter-spacing:1px;border-top:0}td.n{display:flex;align-items:center;gap:9px;font-weight:700}td.r{width:52px;color:var(--mut);font-family:'Chakra Petch',sans-serif}
+tr:nth-child(-n+3) td.r{color:var(--gold)}
+.empty{color:var(--mut);padding:14px;border:1px dashed var(--line);border-radius:14px}
+footer{margin:60px 0 30px;text-align:center;color:var(--mut);font-size:13px;line-height:1.8}footer a{color:#b9a8ff}
+dialog{padding:0;border:0;background:transparent;width:min(1100px,94vw)}dialog::backdrop{background:rgba(3,2,12,.85);backdrop-filter:blur(4px)}
+dialog .box{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000}dialog.tall .box{aspect-ratio:9/16;max-height:88vh;margin:0 auto;width:auto;height:88vh}
+dialog iframe{width:100%;height:100%;border:0}dialog .x{position:absolute;top:-44px;right:0;background:none;border:0;color:#fff;font-size:30px;cursor:pointer}
+</style></head><body>
+<nav><div class="wrap"><a class="brand" href="#">MERRYPEACE<i>TV</i></a><div class="links"><a href="#casts">Past casts</a><a href="#goals">Top goals</a><a href="#schedule">Schedule</a><a href="#results">Results</a><a href="#standings">Standings</a></div></div></nav>
+<div class="wrap">
+<header>
+  <span class="badge" id="livebadge"><b></b><span>Offline · next cast on the schedule</span></span>
+  <h1>MERRYPEACE<span>TV</span></h1>
+  <p class="tag">Live casts of Orion Drift Competitive (ODC) - VR esports, with play-by-play, replays and the biggest goals of the week.</p>
+  <div class="btns">
+    <a class="btn yt" href="https://youtube.com/@MerryPeaceTV">▶ Watch on YouTube</a>
+    <a class="btn dc" href="https://discord.gg/Jm765bJypZ">💬 Join the Discord</a>
+    <a class="btn" href="https://www.tiktok.com/@merrypeace_casting">🎵 TikTok</a>
+    <a class="btn" href="https://www.youtube.com/@Shokonishmiya">▶ Main channel</a>
+  </div>
+  <div class="stats"><div><b id="s-casts">-</b>full casts</div><div><b id="s-views">-</b>cast views</div><div><b id="s-season">-</b>season</div></div>
+</header>
 <div class="live"><iframe src="https://www.youtube.com/embed/live_stream?channel=UCjY3kK3Ppx5il2088WBjtZw" title="MerryPeaceTV live" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-<h2>Upcoming ODC matches <small id="upd"></small></h2><div class="grid" id="up"><div class="empty">Loading…</div></div>
-<h2>Latest results</h2><div class="grid" id="res"></div>
-<h2>Standings <small id="wk"></small></h2><div class="tabs" id="tabs"></div><table><thead><tr><th>#</th><th>Team</th><th>W-L</th><th>MMR</th></tr></thead><tbody id="st"></tbody></table>
-<footer>Stats from <a href="https://oriondriftcompetitive.com">oriondriftcompetitive.com</a>, updated every 30 minutes &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></footer>
+
+<section id="casts"><h2>Past casts <small>full ODC matches, cast live</small><a class="more" href="https://www.youtube.com/@MerryPeaceTV/streams">All on YouTube →</a></h2><div class="vids" id="vids"><div class="empty">Loading…</div></div></section>
+<section id="goals"><h2>Top goals <small>the best moments as Shorts</small></h2><div class="shorts" id="shorts"></div></section>
+<section id="schedule"><h2>Upcoming ODC matches <small id="upd"></small></h2><div class="grid" id="up"><div class="empty">Loading…</div></div></section>
+<section id="results"><h2>Latest results</h2><div class="grid" id="res"></div></section>
+<section id="standings"><h2>Standings <small id="wk"></small></h2><div class="tabs" id="tabs"></div><table><thead><tr><th>#</th><th>Team</th><th>W-L</th><th>MMR</th></tr></thead><tbody id="st"></tbody></table></section>
+<footer>Match data from <a href="https://oriondriftcompetitive.com">oriondriftcompetitive.com</a>, checked every 10 minutes<br><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></footer>
 </div>
+<dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="box"><iframe id="pl" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video"></iframe></div></dialog>
 <script>
 function e(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function lg(t){return '<div class="lg" style="'+(t.logo?'background-image:url(&quot;'+e(t.logo)+'&quot;)':'')+'">'+(t.logo?'':e((t.name||'?')[0]))+'</div>'}
-function when(s){var d=new Date(s),n=new Date(),tm=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),dd=d.toDateString()===n.toDateString()?'Today':d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});return dd+'<b>'+tm+'</b>'}
-function card(m,done){var w1=done&&m.s1>m.s2,w2=done&&m.s2>m.s1;
-  return '<div class="m"><div class="tm">'+lg(m.t1)+'<b class="'+(w1?'win':'')+'">'+e(m.t1.name)+'</b></div><div class="mid">'+(done?'Week '+e(m.week)+'<b>'+m.s1+' - '+m.s2+'</b>':when(m.time))+'<span class="rg">'+e(m.region)+'</span></div><div class="tm r">'+lg(m.t2)+'<b class="'+(w2?'win':'')+'">'+e(m.t2.name)+'</b></div></div>'}
-var D,R='NA';
+function when(s){var d=new Date(s),n=new Date(),t=new Date(n.getTime()+864e5),tm=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}),dd=d.toDateString()===n.toDateString()?'Today':d.toDateString()===t.toDateString()?'Tomorrow':d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});return dd+'<b>'+tm+'</b>'}
+function ago(s){var m=(Date.now()-Date.parse(s))/6e4;if(m<60)return Math.max(1,Math.round(m))+' min ago';if(m<1440)return Math.round(m/60)+' h ago';var d=Math.round(m/1440);return d<14?d+' days ago':new Date(s).toLocaleDateString([],{month:'short',day:'numeric'})}
+function n(x){return x>=1000?(x/1000).toFixed(x>=1e4?0:1)+'K':String(x)}
+function card(m,done){var w1=done&&m.s1>m.s2,w2=done&&m.s2>m.s1,live=!done&&(m.state==='live'||Date.parse(m.time)<Date.now());
+  return '<div class="m'+(live?' lv':'')+'"><div class="tm">'+lg(m.t1)+'<b class="'+(w1?'win':'')+'">'+e(m.t1.name)+'</b></div><div class="mid">'+(done?'Week '+e(m.week)+'<b>'+m.s1+' - '+m.s2+'</b>':live?'<span class="lvt">● LIVE NOW</span><b>'+m.s1+' - '+m.s2+'</b>':when(m.time))+'<span class="rg">'+e(m.region)+'</span></div><div class="tm r">'+lg(m.t2)+'<b class="'+(w2?'win':'')+'">'+e(m.t2.name)+'</b></div></div>'}
+function clean(t){return t.replace(/\s*\|\s*(casting live|Orion Drift Competitive LIVE)\s*/ig,' | ').replace(/^ODC S1\.5\s*\|\s*/i,'').replace(/\s*\|\s*$/,'')}
+function vid(v,i,short){var th='https://i.ytimg.com/vi/'+e(v.id)+'/'+(short?'oar2':'hqdefault')+'.jpg',wk=(v.title.match(/Week\s*\d+/i)||[''])[0];
+  if(i===0&&!short)return '<button class="v feat" data-id="'+e(v.id)+'"><div class="th" style="background-image:url(&quot;https://i.ytimg.com/vi/'+e(v.id)+'/maxresdefault.jpg&quot;),url(&quot;'+th+'&quot;)">'+(wk?'<span class="tagw">'+e(wk.toUpperCase())+'</span>':'')+'</div><div class="meta"><div class="kick">LATEST CAST</div><div class="ti">'+e(clean(v.title))+'</div><div class="sub">'+n(v.views)+' views · '+ago(v.date)+'</div></div></button>';
+  return '<button class="v" data-id="'+e(v.id)+'"'+(short?' data-short="1"':'')+'><div class="th" style="background-image:url(&quot;'+th+'&quot;),url(&quot;https://i.ytimg.com/vi/'+e(v.id)+'/hqdefault.jpg&quot;)">'+(wk&&!short?'<span class="tagw">'+e(wk.toUpperCase())+'</span>':'')+'</div><div class="meta"><div class="ti">'+e(short?v.title.replace(/#\S+/g,'').trim():clean(v.title))+'</div><div class="sub">'+n(v.views)+' views · '+ago(v.date)+'</div></div></button>'}
+var D,R='NA',dlg=document.getElementById('dlg'),pl=document.getElementById('pl');
+document.addEventListener('click',function(ev){var b=ev.target.closest('.v');if(b){dlg.classList.toggle('tall',!!b.getAttribute('data-short'));pl.src='https://www.youtube-nocookie.com/embed/'+b.getAttribute('data-id')+'?autoplay=1&rel=0';dlg.showModal()}
+  if(ev.target===dlg||ev.target.classList.contains('x'))dlg.close()});
+dlg.addEventListener('close',function(){pl.src=''});
 function st(){var s=D.standings[R]||{teams:[]};document.getElementById('wk').textContent=s.week?('Week '+s.week+(s.weeks?' of '+s.weeks:'')):'';
   document.getElementById('st').innerHTML=s.teams.map(function(t){return '<tr><td class="r">'+t.rank+'</td><td class="n">'+lg(t)+e(t.name)+'</td><td>'+t.w+'-'+t.l+'</td><td>'+t.mmr+'</td></tr>'}).join('')||'<tr><td colspan="4" class="empty">No standings yet</td></tr>';
   document.getElementById('tabs').innerHTML=Object.keys(D.standings).map(function(k){return '<button class="'+(k===R?'on':'')+'" data-r="'+k+'">'+k+'</button>'}).join('')}
 document.getElementById('tabs').onclick=function(ev){var r=ev.target.getAttribute('data-r');if(r){R=r;st()}};
 fetch('https://raw.githubusercontent.com/MerryPeace1/MerryPeace1.github.io/main/data.json?t='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(){return fetch('data.json').then(function(r){return r.json()})}).then(function(d){D=d;
-  document.getElementById('upd').textContent='updated '+new Date(d.updated).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
-  document.getElementById('up').innerHTML=d.upcoming.map(function(m){return card(m,false)}).join('')||'<div class="empty">No matches scheduled right now.</div>';
-  document.getElementById('res').innerHTML=d.recent.map(function(m){return card(m,true)}).join('')||'<div class="empty">No results yet.</div>';
+  var chk=d.checked||d.updated;document.getElementById('upd').textContent='checked '+ago(chk);
+  // only matches that have not started more than 3 hours ago, in case the data is a little old
+  var up=(d.upcoming||[]).filter(function(m){return Date.parse(m.time)>Date.now()-3*36e5});
+  var live=up.some(function(m){return m.state==='live'});
+  if(live){var b=document.getElementById('livebadge');b.classList.add('on');b.querySelector('span').textContent='ODC match live right now'}
+  document.getElementById('up').innerHTML=up.map(function(m){return card(m,false)}).join('')||'<div class="empty">No matches have a time yet - teams pick their times during the week.</div>';
+  document.getElementById('res').innerHTML=(d.recent||[]).map(function(m){return card(m,true)}).join('')||'<div class="empty">No results yet.</div>';
+  var S=d.streams||[];document.getElementById('vids').innerHTML=S.slice(0,9).map(function(v,i){return vid(v,i)}).join('')||'<div class="empty">Past casts show up here after each stream.</div>';
+  var G=d.goals||[];document.getElementById('shorts').innerHTML=G.slice(0,12).map(function(v,i){return vid(v,i,true)}).join('')||'<div class="empty">Top goals coming soon.</div>';
+  document.getElementById('s-casts').textContent=S.length;document.getElementById('s-views').textContent=n(S.reduce(function(a,v){return a+(v.views||0)},0));document.getElementById('s-season').textContent=(d.season||'').replace('Season ','S')||'-';
   if(!d.standings[R])R=Object.keys(d.standings)[0];st()}).catch(function(){document.getElementById('up').innerHTML='<div class="empty">Schedule unavailable right now.</div>'});
 </script></body></html>
